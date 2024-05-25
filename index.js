@@ -39,6 +39,7 @@ async function run() {
     const userCollection = client.db("productPulseDB").collection("users");
     const productCollection = client.db("productPulseDB").collection("products");
     const reviewCollection = client.db("productPulseDB").collection("reviews");
+    const sellCollection = client.db("productPulseDB").collection("sold");
 
 
      // Get data
@@ -90,6 +91,21 @@ async function run() {
     res.send(result);
 });
 
+// Sold
+
+app.get("/sold", async (req, res) => {
+  const cursor = sellCollection.find();
+  const result = await cursor.toArray();
+  res.send(result);
+});
+
+app.get('/sold/:id', async (req, res) => {
+  const id = req.params.id;
+  const query = { _id: new ObjectId(id) }
+  const result = await sellCollection.findOne(query)
+  res.send(result);
+});
+
 
       // Post Data
 
@@ -105,8 +121,16 @@ async function run() {
       // reviews
 
       app.post("/reviews", async(req, res) => {
-        const user = req.body;
-        const result = await reviewCollection.insertOne(user);
+        const addedReview = req.body;
+        const result = await reviewCollection.insertOne(addedReview);
+        res.send(result);
+      });
+
+      // sold
+
+      app.post("/sold", async(req, res) => {
+        const myProduct = req.body;
+        const result = await sellCollection.insertOne(myProduct);
         res.send(result);
       });
 
