@@ -134,6 +134,28 @@ app.get('/sold/:id', async (req, res) => {
         res.send(result);
       });
 
+      // DELETE
+
+      // Users
+
+       // Users
+
+    app.delete('/users/:id', async(req, res)=> {
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)}
+      const result = await userCollection.deleteOne(query);
+      res.send(result);
+    });
+
+    // Reviews
+
+    app.delete('/reviews/:id', async(req, res)=> {
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)}
+      const result = await reviewCollection.deleteOne(query);
+      res.send(result);
+    });
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
